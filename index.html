@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A special birthday celebration page filled with love, memories, and heartfelt wishes.">
+    <title>🎂 Happy Birthday! 🎉</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== CONFETTI CANVAS ===== -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero" class="hero">
+        <div class="hero-particles" id="hero-particles"></div>
+        <div class="hero-content">
+            <div class="hero-emoji-ring">
+                <span class="ring-emoji" style="--i:0">🎈</span>
+                <span class="ring-emoji" style="--i:1">🎁</span>
+                <span class="ring-emoji" style="--i:2">🎂</span>
+                <span class="ring-emoji" style="--i:3">⭐</span>
+                <span class="ring-emoji" style="--i:4">🎉</span>
+                <span class="ring-emoji" style="--i:5">💖</span>
+                <span class="ring-emoji" style="--i:6">✨</span>
+                <span class="ring-emoji" style="--i:7">🥳</span>
+            </div>
+            <p class="hero-pre-text">✨ It's a Special Day ✨</p>
+            <h1 class="hero-title">
+                <span class="title-line">Happy</span>
+                <span class="title-line title-accent">Birthday!</span>
+            </h1>
+            <p class="hero-name" id="hero-name">Dear Friend</p>
+            <p class="hero-subtitle">Today we celebrate the most amazing person we know 🎉</p>
+            <a href="#qualities" class="hero-cta" id="hero-cta">
+                <span>Unwrap Your Surprise</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </a>
+        </div>
+        <div class="scroll-indicator" id="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUALITIES SECTION ===== -->
+    <section id="qualities" class="section qualities-section">
+        <div class="section-header">
+            <span class="section-tag">💛 A Little Appreciation</span>
+            <h2 class="section-title">Why You're <span class="text-gradient">Amazing</span></h2>
+            <p class="section-subtitle">Here are just a few of the million reasons we love you</p>
+        </div>
+        <div class="qualities-grid" id="qualities-grid">
+            <!-- Cards injected by JS -->
+        </div>
+    </section>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <section id="gallery" class="section gallery-section">
+        <div class="section-header">
+            <span class="section-tag">📸 Memory Lane</span>
+            <h2 class="section-title">Our <span class="text-gradient">Memories</span></h2>
+            <p class="section-subtitle">Every picture tells a story of our amazing journey together</p>
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Photos injected by JS -->
+        </div>
+    </section>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close lightbox">&times;</button>
+        <img src="" alt="Full size photo" class="lightbox-img" id="lightbox-img">
+        <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+
+    <!-- ===== WISHES SECTION ===== -->
+    <section id="wishes" class="section wishes-section">
+        <div class="wishes-card">
+            <div class="wishes-decoration wishes-decoration-tl">✨</div>
+            <div class="wishes-decoration wishes-decoration-tr">💫</div>
+            <div class="wishes-decoration wishes-decoration-bl">🌟</div>
+            <div class="wishes-decoration wishes-decoration-br">⭐</div>
+            <span class="wishes-tag">🎁 A Special Message</span>
+            <h2 class="wishes-title">Birthday Wishes</h2>
+            <div class="wishes-text" id="wishes-text">
+                <!-- Typing effect text injected by JS -->
+            </div>
+            <p class="wishes-signature" id="wishes-signature">— With all my love ❤️</p>
+        </div>
+    </section>
+
+    <!-- ===== CELEBRATION SECTION ===== -->
+    <section id="celebration" class="section celebration-section">
+        <div class="celebration-content">
+            <div class="cake-container" id="cake-container">
+                <div class="cake">
+                    <div class="candle-row">
+                        <div class="candle"><div class="flame" id="flame-1"></div></div>
+                        <div class="candle"><div class="flame" id="flame-2"></div></div>
+                        <div class="candle"><div class="flame" id="flame-3"></div></div>
+                    </div>
+                    <div class="cake-layer cake-top"></div>
+                    <div class="cake-layer cake-middle"></div>
+                    <div class="cake-layer cake-bottom"></div>
+                </div>
+            </div>
+            <h2 class="celebration-title">Make a Wish! 🌠</h2>
+            <p class="celebration-subtitle">Click the button to blow out the candles</p>
+            <button class="blow-btn" id="blow-btn">
+                <span>🎂</span> Blow the Candles!
+            </button>
+            <p class="celebration-message hidden" id="celebration-message">
+                🎉 Happy Birthday! May all your wishes come true! 🎉
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>Made with 💖 just for you</p>
+        <div class="footer-emojis">
+            <span>🎈</span><span>🎂</span><span>🎁</span><span>🎉</span><span>💖</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
