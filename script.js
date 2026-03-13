@@ -63,22 +63,123 @@ const CONFIG = {
     wish: "On this special day, I just want you to know how incredibly grateful I am to have you in my life. You make the world a better, brighter, and more beautiful place just by being in it. May this year bring you endless joy, adventures, laughter, and all the love your wonderful heart deserves. Here's to another amazing year of being YOU! 🎂💖✨",
 
     // Signature line under the wish
-    signature: "— With all my love ❤️"
+    signature: "— With all my love ❤️",
+
+    // Active theme
+    theme: "default"
 };
+
+let currentStepIndex = 0;
+let steps = [];
 
 // ===== 🚀 INITIALIZATION =====
 
 document.addEventListener("DOMContentLoaded", () => {
+    loadConfigFromURL();
+    applyTheme();
+    
     setName();
     renderQualities();
     renderGallery();
     createHeroParticles();
-    initScrollAnimations();
+    
+    // Instead of scrolling, we use tap-to-advance
+    initTapToAdvance();
+    // initScrollAnimations(); // We will trigger animations per step instead
+    // initSmoothScroll(); // Not needed for tap-to-advance
+    
     initTypingEffect();
     initCakeInteraction();
     initLightbox();
-    initSmoothScroll();
+    initCustomizer();
 });
+
+// ===== ⚙️ URL CONFIG & THEMES =====
+
+function loadConfigFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get('data');
+    if (data) {
+        try {
+            const decoded = atob(decodeURIComponent(data));
+            const parsedInfo = JSON.parse(decoded);
+            Object.assign(CONFIG, parsedInfo);
+        } catch (e) {
+            console.error("Failed to parse config from URL", e);
+        }
+    }
+}
+
+function applyTheme() {
+    document.documentElement.className = '';
+    if (CONFIG.theme && CONFIG.theme !== 'default') {
+        document.documentElement.classList.add(CONFIG.theme);
+    }
+}
+
+// ===== 👣 TAP TO ADVANCE =====
+
+function initTapToAdvance() {
+    steps = Array.from(document.querySelectorAll('.step'));
+    
+    // Set initial state
+    steps.forEach((step, index) => {
+        if (index === 0) {
+            step.classList.add('active');
+            triggerStepAnimations(step);
+        } else {
+            step.classList.remove('active');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        // Prevent advance if clicking on interactive elements
+        if (e.target.closest('button') || 
+            e.target.closest('a') || 
+            e.target.closest('.gallery-item') || 
+            e.target.closest('.lightbox') ||
+            e.target.closest('.customizer-modal')) {
+            return;
+        }
+
+        advanceStep();
+    });
+}
+
+function advanceStep() {
+    if (currentStepIndex >= steps.length - 1) return; // At end
+    
+    const currentStep = steps[currentStepIndex];
+    currentStep.classList.remove('active');
+    
+    currentStepIndex++;
+    
+    const nextStep = steps[currentStepIndex];
+    nextStep.classList.add('active');
+    triggerStepAnimations(nextStep);
+}
+
+function triggerStepAnimations(step) {
+    // Animate inner elements that were previously triggered by scroll
+    const animatables = step.querySelectorAll('.quality-card, .gallery-item');
+    animatables.forEach((el, index) => {
+        setTimeout(() => {
+            el.classList.add('animate-in');
+        }, index * 100);
+    });
+
+    const hiddens = step.querySelectorAll('.hidden:not(#celebration-message)');
+    hiddens.forEach(el => el.classList.add('show'));
+
+    // Trigger typing effect if it's the wishes section
+    if (step.id === 'wishes') {
+        const wishContainer = document.getElementById("wishes-text");
+        if (wishContainer && !wishContainer.classList.contains('typed')) {
+            wishContainer.classList.add('typed');
+            typeText(wishContainer, CONFIG.wish);
+        }
+    }
+}
 
 // ===== 📛 SET NAME =====
 
@@ -219,21 +320,7 @@ function initScrollAnimations() {
 // ===== ✍️ TYPING EFFECT =====
 
 function initTypingEffect() {
-    const wishContainer = document.getElementById("wishes-text");
-    if (!wishContainer) return;
-
-    let hasTyped = false;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !hasTyped) {
-                hasTyped = true;
-                typeText(wishContainer, CONFIG.wish);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    observer.observe(wishContainer);
+    // Note: Typing is now triggered by triggerStepAnimations() when the step becomes active
 }
 
 function typeText(container, text) {
@@ -411,19 +498,76 @@ function initLightbox() {
     });
 }
 
-// ===== 🔗 SMOOTH SCROLL =====
+// ===== 🔗 CUSTOMIZER MODAL =====
 
-function initSmoothScroll() {
-    const cta = document.getElementById("hero-cta");
-    if (cta) {
-        cta.addEventListener("click", (e) => {
-            e.preventDefault();
-            const target = document.querySelector(cta.getAttribute("href"));
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth" });
-            }
+function initCustomizer() {
+    const modal = document.getElementById('customizer-modal');
+    const btn = document.getElementById('customizer-btn');
+    const closeBtn = document.getElementById('customizer-close');
+    const generateBtn = document.getElementById('generate-btn');
+    const linkContainer = document.getElementById('share-link-container');
+    const linkInput = document.getElementById('share-link-input');
+    const copyBtn = document.getElementById('copy-link-btn');
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    
+    if (!modal || !btn) return;
+
+    // Open modal
+    btn.addEventListener('click', () => {
+        document.getElementById('edit-name').value = CONFIG.name;
+        document.getElementById('edit-quote').value = CONFIG.wish;
+        
+        // Set active theme button
+        themeBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.theme === (CONFIG.theme || 'default'));
         });
-    }
+        
+        modal.classList.add('active');
+        linkContainer.classList.add('hidden');
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+
+    // Select theme
+    let selectedTheme = CONFIG.theme || 'default';
+    themeBtns.forEach(tBtn => {
+        tBtn.addEventListener('click', (e) => {
+            themeBtns.forEach(b => b.classList.remove('active'));
+            const target = e.currentTarget;
+            target.classList.add('active');
+            selectedTheme = target.dataset.theme;
+        });
+    });
+
+    // Generate link
+    generateBtn.addEventListener('click', () => {
+        const newName = document.getElementById('edit-name').value.trim() || CONFIG.name;
+        const newWish = document.getElementById('edit-quote').value.trim() || CONFIG.wish;
+
+        const newConfig = {
+            name: newName,
+            wish: newWish,
+            theme: selectedTheme
+        };
+
+        const configStr = JSON.stringify(newConfig);
+        const encoded = encodeURIComponent(btoa(configStr));
+        
+        const url = new URL(window.location.href);
+        url.searchParams.set('data', encoded);
+        
+        linkInput.value = url.toString();
+        linkContainer.classList.remove('hidden');
+    });
+
+    // Copy link
+    copyBtn.addEventListener('click', () => {
+        linkInput.select();
+        document.execCommand('copy');
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy', 2000);
+    });
 }
 
 // ===== 📐 RESIZE HANDLER =====

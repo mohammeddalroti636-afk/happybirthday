@@ -51,6 +51,40 @@
     --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
+:root.theme-ocean {
+    --clr-bg-dark: #001015;
+    --clr-bg-section: #001a24;
+    --clr-primary: #0ea5e9;
+    --clr-primary-light: #38bdf8;
+    --clr-secondary: #14b8a6;
+    --clr-secondary-light: #2dd4bf;
+    --clr-accent: #8b5cf6;
+    --clr-accent-light: #a78bfa;
+    --grad-hero: linear-gradient(135deg, #001015 0%, #002233 25%, #004466 50%, #002233 75%, #001015 100%);
+}
+:root.theme-rose {
+    --clr-bg-dark: #1a050d;
+    --clr-bg-section: #260a16;
+    --clr-primary: #f43f5e;
+    --clr-primary-light: #fb7185;
+    --clr-secondary: #f472b6;
+    --clr-secondary-light: #f9a8d4;
+    --clr-accent: #e11d48;
+    --clr-accent-light: #fda4af;
+    --grad-hero: linear-gradient(135deg, #1a050d 0%, #3a0a1a 25%, #55122a 50%, #3a0a1a 75%, #1a050d 100%);
+}
+:root.theme-forest {
+    --clr-bg-dark: #051a0c;
+    --clr-bg-section: #0a2615;
+    --clr-primary: #10b981;
+    --clr-primary-light: #34d399;
+    --clr-secondary: #84cc16;
+    --clr-secondary-light: #bef264;
+    --clr-accent: #059669;
+    --clr-accent-light: #6ee7b7;
+    --grad-hero: linear-gradient(135deg, #051a0c 0%, #0a331a 25%, #124d29 50%, #0a331a 75%, #051a0c 100%);
+}
+
 /* ----- Reset & Base ----- */
 *, *::before, *::after {
     margin: 0;
@@ -59,16 +93,21 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    /* removed scroll-behavior: smooth; */
     font-size: 16px;
+    height: 100%;
 }
 
 body {
     font-family: var(--font-body);
     background: var(--clr-bg-dark);
     color: var(--clr-text);
-    overflow-x: hidden;
+    overflow: hidden; /* Prevent scrolling entirely */
+    width: 100%;
+    height: 100%;
     line-height: 1.6;
+    position: fixed;
+    touch-action: manipulation; /* better tap handling */
 }
 
 /* ----- Confetti Canvas ----- */
@@ -101,9 +140,34 @@ body {
     transform: translateY(0);
 }
 
+.step {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto; /* Allow internal scrolling if content overflows */
+    overflow-x: hidden;
+}
+
+.step.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 20;
+}
+
 .section {
-    padding: var(--space-2xl) var(--space-md);
+    padding: var(--space-xl) var(--space-md);
     position: relative;
+    width: 100%;
+    min-height: 100vh;
 }
 
 .section-header {
@@ -145,6 +209,7 @@ body {
    ============================================= */
 .hero {
     min-height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -294,13 +359,22 @@ body {
     box-shadow: var(--shadow-glow-md), 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Scroll Indicator */
+/* Scroll Indicator mapped to tap indicator */
 .scroll-indicator {
     position: absolute;
-    bottom: 40px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     animation: fadeInUp 1s ease 1.5s both;
+    pointer-events: none;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--clr-text-muted);
+}
+.tap-text {
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .scroll-mouse {

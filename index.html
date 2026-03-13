@@ -19,7 +19,7 @@
     <canvas id="confetti-canvas"></canvas>
 
     <!-- ===== HERO SECTION ===== -->
-    <section id="hero" class="hero">
+    <section id="hero" class="hero step active">
         <div class="hero-particles" id="hero-particles"></div>
         <div class="hero-content">
             <div class="hero-emoji-ring">
@@ -45,6 +45,7 @@
             </a>
         </div>
         <div class="scroll-indicator" id="scroll-indicator">
+            <p class="tap-text">Tap anywhere to continue</p>
             <div class="scroll-mouse">
                 <div class="scroll-dot"></div>
             </div>
@@ -52,7 +53,7 @@
     </section>
 
     <!-- ===== QUALITIES SECTION ===== -->
-    <section id="qualities" class="section qualities-section">
+    <section id="qualities" class="section qualities-section step">
         <div class="section-header">
             <span class="section-tag">💛 A Little Appreciation</span>
             <h2 class="section-title">Why You're <span class="text-gradient">Amazing</span></h2>
@@ -64,7 +65,7 @@
     </section>
 
     <!-- ===== GALLERY SECTION ===== -->
-    <section id="gallery" class="section gallery-section">
+    <section id="gallery" class="section gallery-section step">
         <div class="section-header">
             <span class="section-tag">📸 Memory Lane</span>
             <h2 class="section-title">Our <span class="text-gradient">Memories</span></h2>
@@ -83,7 +84,7 @@
     </div>
 
     <!-- ===== WISHES SECTION ===== -->
-    <section id="wishes" class="section wishes-section">
+    <section id="wishes" class="section wishes-section step">
         <div class="wishes-card">
             <div class="wishes-decoration wishes-decoration-tl">✨</div>
             <div class="wishes-decoration wishes-decoration-tr">💫</div>
@@ -99,7 +100,7 @@
     </section>
 
     <!-- ===== CELEBRATION SECTION ===== -->
-    <section id="celebration" class="section celebration-section">
+    <section id="celebration" class="section celebration-section step">
         <div class="celebration-content">
             <div class="cake-container" id="cake-container">
                 <div class="cake">
@@ -131,6 +132,45 @@
             <span>🎈</span><span>🎂</span><span>🎁</span><span>🎉</span><span>💖</span>
         </div>
     </footer>
+
+    </footer>
+
+    <!-- ===== CUSTOMIZER MODAL ===== -->
+    <button class="customizer-btn" id="customizer-btn" title="Create your own!">🪄 Create Yours</button>
+    <div class="customizer-modal" id="customizer-modal">
+        <div class="customizer-content">
+            <button class="customizer-close" id="customizer-close">&times;</button>
+            <h2 class="customizer-title">Make it Yours ✨</h2>
+            <p class="customizer-subtitle">Customize this page for your friend and share the link!</p>
+            
+            <div class="customizer-form">
+                <div class="form-group">
+                    <label for="edit-name">Friend's Name</label>
+                    <input type="text" id="edit-name" placeholder="e.g. Alex" />
+                </div>
+                <div class="form-group">
+                    <label for="edit-quote">Main Birthday Wish</label>
+                    <textarea id="edit-quote" rows="4" placeholder="Your special message..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Choose Theme</label>
+                    <div class="theme-selector" id="theme-selector">
+                        <button class="theme-btn active" data-theme="default" style="background: linear-gradient(135deg, #a855f7, #f59e0b)"></button>
+                        <button class="theme-btn" data-theme="theme-ocean" style="background: linear-gradient(135deg, #0ea5e9, #14b8a6)"></button>
+                        <button class="theme-btn" data-theme="theme-rose" style="background: linear-gradient(135deg, #f43f5e, #f472b6)"></button>
+                        <button class="theme-btn" data-theme="theme-forest" style="background: linear-gradient(135deg, #10b981, #84cc16)"></button>
+                    </div>
+                </div>
+                <button class="generate-btn" id="generate-btn">
+                    <span>🔗</span> Generate Share Link
+                </button>
+                <div class="share-link-container hidden" id="share-link-container">
+                    <input type="text" id="share-link-input" readonly />
+                    <button id="copy-link-btn">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
